@@ -59,7 +59,7 @@ while True:
     centroides_atual = []
     
 
-    # Encontrar centróides e bounding box dos veículos
+    # Encontrar centróides e bounding box dos veículos e calcular a velocidade
     for contour in contours_esq:
         # Encontrar bounding box
         x, y, w, h = cv2.boundingRect(contour)
@@ -67,8 +67,17 @@ while True:
         cx = x + w//2
         cy = y + h//2
         centroides_atual.append((cx, cy))
-        # Desenhar bounding box
-        cv2.rectangle(crop_esquerda_binario, (x, y), (x+w, y+h), (255, 0, 255), 2)
+        for anterior in centroide_anterior:
+            distancia = np.linalg.norm(np.array(anterior)-np.array((cx,cy)))
+            if distancia < 40:
+                velocidade = distancia/tempo_por_frame
+                # colocar bounding box rosa e velocidade no frame
+                cv2.rectangle(crop_esquerda_binario, (x, y), (x+w, y+h), (255, 0, 255), 2)
+                # Mostrar velocidade
+                cv2.putText(crop_esquerda_binario, f'{velocidade:.2f} px/s', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 2)
+
+
+              
 
 
 
