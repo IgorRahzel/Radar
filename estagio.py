@@ -43,6 +43,10 @@ while True:
     # Encontrar os centroides
     centroides_direita = frame_processor_direita.find_centroids()
     centroides_esquerda = frame_processor_esquerda.find_centroids()
+
+    # Encontrar a velocidade
+    frame_processor_direita.find_speed(frame,50)
+    frame_processor_esquerda.find_speed(frame,50)
     
     small_frame = cv2.resize(frame, (640, 360))  # Tamanho ajustável
 
