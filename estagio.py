@@ -4,6 +4,8 @@ from cap_from_youtube import cap_from_youtube
 import numpy as np
 import os
 from frame_processor import frame_processor
+
+# Definindo ROI
 roi_direita = np.array([[676,290], [822,290], [1180, 540], [711, 540]], dtype=np.int32)
 roi_esquerda = np.array([[541, 294], [648, 294], [574, 523], [76, 523]], dtype=np.int32)
 
@@ -22,6 +24,7 @@ if not capture.isOpened():
     print('Unable to open')
     exit(0)
 
+# Inicializando os processadores de frame
 frame_processor_direita = frame_processor(roi_direita,fps)
 frame_processor_esquerda = frame_processor(roi_esquerda,fps)
 
