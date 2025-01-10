@@ -16,6 +16,22 @@ cv2.setNumThreads(1)
 # Captura do vídeo
 capture = cap_from_youtube('https://www.youtube.com/watch?v=nt3D26lrkho&ab_channel=VK', '720p')
 
+# fps do vídeo
+fps = capture.get(cv2.CAP_PROP_FPS)
+tempo_por_frame = 1/fps
+
+tempo_total = 0
+
+# Configurações para salvar o vídeo
+output_filename = 'resultado.mp4'
+frame_width = 640  # Resolucão compatível
+frame_height = 360
+duração = 5
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Ou 'avc1'
+out = cv2.VideoWriter(output_filename, fourcc, fps, (frame_width, frame_height))
+Recording = False
+
+
 if not capture.isOpened():
     print('Unable to open')
     exit(0)
@@ -62,6 +78,17 @@ while True:
     keyboard = cv2.waitKey(30)
     if keyboard == ord('q') or keyboard == 27:  # Tecla 'q' ou 'ESC' para sair
         break
+
+    if keyboard == ord('r'):
+        Recording = True
+    
+    if Recording:
+        # Salvar o frame processado no vídeo
+        out.write(small_frame)
+        tempo_total += tempo_por_frame
+        print(tempo_total)
+        if tempo_total >= 5:
+            break
 
 cv2.destroyAllWindows()
 

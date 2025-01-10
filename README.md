@@ -1,5 +1,9 @@
 
 # Radar
+
+![Demo of the project](./results/output.gif)
+
+
 Este é um projeto que visa implementar a partir do vídeo disponível em `https://www.youtube.com/watch?v=nt3D26lrkho&ab_channel=VK`, o qual captura veículos se deslocando por uma rodavia os seguintes aspectos:
 
 - Identificação e detecção dos veículos
