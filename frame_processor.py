@@ -91,9 +91,8 @@ class frame_processor:
                 distancia = np.sqrt((cx_atual - cx_anterior)**2 + (cy_atual - cy_anterior)**2)
                 # Se a distância for menor que o threshold, calcular a velocidade
                 if distancia < dist_threshold:
-                    # Converter distância para metros
-                    distancia = (real_dist*distancia)/reference_dist
-                    velocidade = (distancia/self.tempo_por_frame) * 3.6
+                    # Velocidade em pixel/frame
+                    velocidade = distancia
                     # Criar bounding box ao redor do veiculo com a velocidade
                     x_offset, y_offset, _,_ = cv2.boundingRect(self.ROI)
                     x, y, w, h = cv2.boundingRect(self.contours[i])
@@ -108,7 +107,7 @@ class frame_processor:
                               (x_original + w, y_original + h), cor_bounding_box, 2)
 
                     # Exibir a velocidade acima do bounding box
-                    cv2.putText(frame_original, f'{velocidade:.2f} km/h', 
+                    cv2.putText(frame_original, f'{velocidade:.2f} pixels/frame', 
                             (x_original, y_original - 10), 
                             cv2.FONT_HERSHEY_SIMPLEX, 1, cor_bounding_box, 2)
                     break
