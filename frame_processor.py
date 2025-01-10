@@ -59,11 +59,8 @@ class frame_processor:
     def find_centroids(self,min_area = 3000):
         self.centroide_anterior = self.centroides_atual.copy()
         self.centroides_atual = []
-        
         # Filtrar contornos com base na área mínima
         self.contours = [contour for contour in self.contours if cv2.contourArea(contour) >= min_area]
-    
-
         # Lista para armazenar as coordenadas finais
         coordinates = []
     
@@ -81,7 +78,10 @@ class frame_processor:
         return self.centroides_atual
 
     
-    def find_speed(self,frame_original,dist_threshold = 50,max_speed = 100):
+    def find_speed(self,frame_original,reference,real_dist = 7,dist_threshold = 50,max_speed = 50):
+        # Computar a distância em pixel ente os pontos de referência fornecidos
+        p1,p2 = reference
+        reference_dist = np.linalg.norm(p2-p1)
         # Encontrar a velocidade e imprimi-la na imagem em cima do bounding box
         for i, atual in enumerate(self.centroides_atual):
             cx_atual, cy_atual = atual
@@ -91,7 +91,9 @@ class frame_processor:
                 distancia = np.sqrt((cx_atual - cx_anterior)**2 + (cy_atual - cy_anterior)**2)
                 # Se a distância for menor que o threshold, calcular a velocidade
                 if distancia < dist_threshold:
-                    velocidade = distancia/self.tempo_por_frame
+                    # Converter distância para metros
+                    distancia = (real_dist*distancia)/reference_dist
+                    velocidade = (distancia/self.tempo_por_frame) * 3.6
                     # Criar bounding box ao redor do veiculo com a velocidade
                     x_offset, y_offset, _,_ = cv2.boundingRect(self.ROI)
                     x, y, w, h = cv2.boundingRect(self.contours[i])
@@ -106,9 +108,9 @@ class frame_processor:
                               (x_original + w, y_original + h), cor_bounding_box, 2)
 
                     # Exibir a velocidade acima do bounding box
-                    cv2.putText(frame_original, f'{velocidade:.2f} px/s', 
+                    cv2.putText(frame_original, f'{velocidade:.2f} km/h', 
                             (x_original, y_original - 10), 
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, cor_bounding_box, 2)
+                            cv2.FONT_HERSHEY_SIMPLEX, 1, cor_bounding_box, 2)
                     break
 
     def count_vehicles(self,frame,line,epsilon,counter_placement,pista,counter_height = 400):

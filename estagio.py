@@ -43,9 +43,34 @@ while True:
     centroides_direita = frame_processor_direita.find_centroids()
     centroides_esquerda = frame_processor_esquerda.find_centroids()
 
+    # Coordenadas Homografia
+    pts_src = np.array([
+    [498, 352],  # Canto superior esquerdo
+    [601, 366],  # Canto superior direito
+    [478, 710],  # Canto inferior direito
+    [68, 687],  # Canto inferior esquerdo
+    ], dtype=np.float32)
+
+    # Pontos de Destino
+    largura  = 7 # em metros
+    comprimento= int(np.max(pts_src[:, 1]) - np.min(pts_src[:, 1]))
+    pts_out = np.array([
+    [0,0],
+    [largura,0],
+    [largura,comprimento],
+    [0,comprimento]
+    ])
+
+    H,_ = cv2.findHomography(pts_src,pts_out)
+
+
+
+
     # Encontrar a velocidade
-    frame_processor_direita.find_speed(frame,50)
-    frame_processor_esquerda.find_speed(frame,50)
+    reference_points_direita = (np.array([690,450]),np.array([895,450]))
+    reference_points_esquerda = (np.array([260,509]),np.array([549,512]))
+    frame_processor_direita.find_speed(frame,reference_points_direita)
+    frame_processor_esquerda.find_speed(frame,reference_points_esquerda)
 
     # Contador de veículos
     counter_placement_esquerda = (120,60)
