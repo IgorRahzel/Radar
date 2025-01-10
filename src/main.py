@@ -23,7 +23,7 @@ tempo_por_frame = 1/fps
 tempo_total = 0
 
 # Configurações para salvar o vídeo
-output_filename = 'resultado.mp4'
+output_filename = 'results/resultado.mp4'
 frame_width = 640  # Resolucão compatível
 frame_height = 360
 duração = 5
@@ -87,7 +87,7 @@ while True:
         out.write(small_frame)
         tempo_total += tempo_por_frame
         print(tempo_total)
-        if tempo_total >= 5:
+        if tempo_total >= 60:
             break
 
 cv2.destroyAllWindows()
