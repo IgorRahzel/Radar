@@ -1,1 +1,0 @@
-delimitacao_pista
