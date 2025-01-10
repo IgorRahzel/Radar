@@ -79,6 +79,20 @@ while True:
     if keyboard == ord('q') or keyboard == 27:  # Tecla 'q' ou 'ESC' para sair
         break
 
+    if keyboard == ord('c'):  # Salvar imagens ao pressionar 'C'
+        processed_images_dir = 'imgs'
+        os.makedirs(processed_images_dir, exist_ok=True)
+
+        # Captura e salva imagens processadas
+        direita_images = frame_processor_direita.get_processed_images()
+        
+
+        for stage, img in direita_images.items():
+            filename = os.path.join(processed_images_dir, f'direita_{stage}.png')
+            cv2.imwrite(filename, img)
+            print(f'Saved: {filename}')
+
+
     if keyboard == ord('r'):
         Recording = True
     

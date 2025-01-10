@@ -58,11 +58,18 @@ roi_direita = np.array([[769,720],[677,301],[754,290],[1280,642],[1280,720]], dt
 ## Processamento dos Frames:
 A primeira etapa consiste na execução do método `process_frame` que recebe como parâmetro o frame atual do vídeo. Esse método executa então as seguintes operações:
 - Extração da *ROI* do frame, isso é efeito apartir de uma chamada para o método `crop_frame`, o qual basicamente cria uma máscara poligonal e recorta a área delimitada pelo menot retângulo que engloba a *ROI*
+![crop](./imgs/direita_1_cropped.png)
 - O brilho da imagem é normalizado
-- É aplicada a operação de *Background Subtraction*, de modo a tentar capturar apenas a parte não estática do vídeo, i.e os veículos
+![norm](./imgs/direita_2_normalized.png)
+- É aplicada a operação de *Background Subtraction*, de modo a tentar capturar apenas a parte não estática do vídeo, i.e os veículos.
+![BS](./imgs/direita_3_background_subtracted.png)
 - São aplicados os filtros Gaussiano e de Mediano visando reduzir o ruído da imagem
+![Gaussino](./imgs/direita_4_gaussian_blur.png)
+![Mediana](./imgs/direita_5_median_blur.png)
 - A imagem é convertida para binária através da aplicação de um threshold na intensidade de seus pixels. Essa transformação para binário é necessária para obter um melhor desempenho das operações subsequentes.
+![Threshold](./imgs/direita_6_threshold.png)
 - As transformações morfológicas de abertura, fechamento e dilatação são aplicadas na tentativa de remover ainda mais o ruído.
+![Morph](./imgs/direita_7_morphological_operations.png)
 -  Por fim, é feita e extração dos contornos dos veículos.
 
 ## Velocidade e Detecção dos veículos:
